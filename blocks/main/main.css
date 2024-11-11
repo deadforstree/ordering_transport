@@ -1,0 +1,23 @@
+.main {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+}
+
+.error {
+    width: 500px;
+    height: 20px;
+    margin: 0 auto;
+    text-align: center;
+    color: red;
+    font-size: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media screen and (max-width: 550px) {
+    .error {
+        width: 300px;
+    }
+}

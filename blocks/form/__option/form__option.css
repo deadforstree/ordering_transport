@@ -1,0 +1,9 @@
+.form__option {
+    padding: 10px;
+    background-color: #eef1f4;
+    font-size: 16px;
+}
+
+.form__option:hover {
+    background-color: #eef1f4;
+}

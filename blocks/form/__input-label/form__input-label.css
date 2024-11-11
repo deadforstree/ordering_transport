@@ -1,0 +1,13 @@
+.form__input-label {
+    text-align: center;
+    height: 20px;
+    color: #24b06a;
+}
+
+@media screen and (max-width: 550px) {
+    .form__input-label {
+        font-size: 10px;
+        padding-top: 5px;
+        height: 15px;
+    }
+}

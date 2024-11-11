@@ -1,0 +1,5 @@
+.form__image-input {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+}

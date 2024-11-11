@@ -1,0 +1,28 @@
+.form__image-title {
+    margin: 0 10px;
+    border: 2px solid #24b06a;
+    width: 495px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: #f0fff3;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form__image-title:hover {
+    cursor: pointer;
+    border-color: #065609;
+    background-color: #eef1f4;
+}
+
+@media screen and (max-width: 550px) {
+    .form__image-title {
+        margin: 0 auto;
+        width: 300px;
+        height: 25px;
+        font-size: 10px;
+    }
+}

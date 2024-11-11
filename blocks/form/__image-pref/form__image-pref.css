@@ -1,0 +1,16 @@
+.form__image-pref {
+    width: 520px;
+    margin: 0 auto
+}
+
+@media screen and (max-width: 550px) {
+    .form__image-pref {
+        max-width: 330px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 колонки */
+        gap: 10px;
+        /* Промежуток между элементами */
+        justify-items: center;
+    }
+}

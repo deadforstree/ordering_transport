@@ -1,0 +1,5 @@
+.form__image-still {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+}

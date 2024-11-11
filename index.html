@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="pages/index.css">
+    <title>Document</title>
+</head>
+
+<body class="page">
+    <section class="main">
+        <form class="form" id="myForm">
+            <select class="form__list" name="route" id="route" required>
+                <option value="" hidden="">Выберите маршрут</option>
+                <option class="form__option" value="Бараки - Заречная">Бараки - Заречная</option>
+                <option class="form__option" value="Бараки - Заречная">Заречная - Бараки</option>
+                <option class="form__option" value="other">Другое</option>
+            </select>
+            <input style="display: none;" id="routeDescription" class="form__input" type="text"
+                placeholder="Описание маршрута" minlength="5">
+            <select class="form__list" name="cargo" id="cargo" required>
+                <option value="" hidden="">Наименование груза</option>
+                <option class="form__option" value="palet">Палеты</option>
+                <option class="form__option" value="other">Другое</option>
+            </select>
+            <input style="display: none;" id="cargoDescription" class="form__input" type="text"
+                placeholder="Описание груза" minlength="5">
+            <input class="form__input" id="cargoComent" type="text" placeholder="Комментарий">
+            <input class="form__input" type="number" id="inputWeight" placeholder="Вес(кг)" required minlength="1"
+                min="1" max="30" step="0.01">
+            <div class="form__dimens">
+                <input class="form__input-dimens" type="number" id="inputLength" placeholder="Длина(см)" required
+                    minlength="1" min="1" max="50">
+                <input class="form__input-dimens" type="number" id="inputWidth" placeholder="Ширина(см)" required
+                    minlength="1" min="1" max="50">
+                <input class="form__input-dimens" type="number" id="inputHeight" placeholder="Высота(см)" required
+                    minlength="1" min="1" max="50">
+            </div>
+            <input class="form__image-input" type="file" id="fileInput" accept="image/*" multiple>
+            <label class="form__image-title" for="fileInput">Загрузите изображение</label>
+            <div class="form__image-pref" id="previewContainer"></div>
+            <div class="calendar" id="calendar"></div>
+            <span class="error"></span>
+            <input disabled id="submitButton" class="form__save-btn" type="submit" value="Отправить">
+            <input id="valueTime" type="hidden">
+            <input id="valueDate" type="hidden">
+        </form>
+    </section>
+    <script>
+
+        let totalFiles = [];
+
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            const files = event.target.files;
+            totalFiles = [...totalFiles, ...files]; // Сохранение всех загруженных файлов
+            displayImages(totalFiles);
+        });
+
+        function displayImages(files) {
+            const previewContainer = document.getElementById('previewContainer');
+            previewContainer.innerHTML = ''; // Очистка предыдущих изображений
+
+            files.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('form__image-preview');
+                    previewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+
+        const data = [
+            {
+                'pk': 1,
+                'transport': 'Валдай',
+                'max_weigth': 3500,
+                'max_length': 4.7,
+                'max_width': 2.2,
+                'max_heigth': 2.2,
+                "dates": [
+                    {
+                        "date": "20.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "10:00",
+                            "11:00",
+                            "13:00",
+                            "14:00",
+                            "15:00",
+                            "16:00",
+                            "17:00",
+                            "18:00",
+                            "19:00",
+                            "20:00",
+                        ]
+                    },
+                    {
+                        "date": "21.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "11:00",
+                            "16:00"
+                        ]
+                    },
+                    {
+                        "date": "22.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "11:00",
+                            "16:00"
+                        ]
+                    },
+                    {
+                        "date": "23.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "11:00",
+                            "16:00"
+                        ]
+                    },
+                    {
+                        "date": "24.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "11:00",
+                            "16:00"
+                        ]
+                    },
+                    {
+                        "date": "25.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "11:00",
+                            "16:00"
+                        ]
+                    }
+                ],
+            },
+            {
+                'pk': 2,
+                'transport': 'Газель',
+                'max_weigth': 1000,
+                'max_length': 6.0,
+                'max_width': 2.0,
+                'max_heigth': 2.0,
+                "dates": [
+                    {
+                        "date": "21.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "13:00",
+                            "16:00"
+                        ]
+                    },
+                    {
+                        "date": "22.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "13:00",
+                            "16:00"
+                        ]
+                    },
+                    {
+                        "date": "23.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "13:00",
+                            "16:00"
+                        ]
+                    },
+                    {
+                        "date": "24.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "13:00",
+                            "16:00"
+                        ]
+                    },
+                    {
+                        "date": "25.09.2024",
+                        "available_time": [
+                            "09:00",
+                            "13:00",
+                            "16:00"
+                        ]
+                    }
+                ],
+            }
+        ]
+
+        const form = document.getElementById('myForm');
+        const selectCargo = document.getElementById('cargo');
+        const aboutCargo = document.getElementById('cargoDescription');
+        const selectRoute = document.getElementById('route');
+        const aboutRoute = document.getElementById('routeDescription');
+        const comentCargo = document.getElementById('cargoComent');
+        const submitButton = document.getElementById('submitButton');
+        const calendarDiv = document.getElementById('calendar');
+        const errorSpan = document.querySelector('.error');
+        // инпуты по порядку и имена для них, для валидации должны соответсвовать
+        const inputs = [
+            document.getElementById('inputWeight'),
+            document.getElementById('inputLength'),
+            document.getElementById('inputWidth'),
+            document.getElementById('inputHeight')
+        ];
+        // инпуты описания
+        const inputsAbout = [aboutCargo, aboutRoute, comentCargo];
+        const inputsNames = ['вес', 'длину', 'ширину', 'высоту'];
+
+        let lastSelectedTime = null;
+
+        selectCargo.addEventListener('change', () => showAbout(selectCargo, aboutCargo));
+        selectRoute.addEventListener('change', () => showAbout(selectRoute, aboutRoute));
+
+        function showAbout(selectElement, aboutElement) {
+            if (selectElement.value === 'other') {
+                aboutElement.style.display = 'block';
+                aboutElement.required = true;
+            } else {
+                aboutElement.style.display = 'none';
+                aboutElement.required = false;
+                aboutElement.value = '';
+            }
+            validateForm();
+        }
+
+        function validateForm() {
+            const allInputsFilled = inputs.every(input => input.value.trim() !== '');
+            const cargoSelectedOther = selectCargo.value === 'other' && aboutCargo.style.display === 'block' && aboutCargo.value.trim() !== '';
+            const routeSelectedOther = selectRoute.value === 'other' && aboutRoute.style.display === 'block' && aboutRoute.value.trim() !== '';
+
+            // Проверка, что селекты выбраны
+            const cargoSelected = selectCargo.value !== '';
+            const routeSelected = selectRoute.value !== '';
+
+            const errors = []; // Массив для хранения сообщений об ошибках
+
+            // Проверка полей для "другое" и комментария
+            if ((selectCargo.value === 'other' && aboutCargo.value.trim() === '') ||
+                (selectRoute.value === 'other' && aboutRoute.value.trim() === '')) {
+                errors.push(selectCargo.value === 'other' ? 'описание груза' : 'описание маршрута');
+            }
+
+            // проверка комментария
+            if (comentCargo.value.trim() === '') {
+                errors.push('комментарий')
+            }
+
+            // Проверка полей веса, длины, ширины и высоты
+            inputs.forEach((input, index) => {
+                if (input.value.trim() === '') {
+                    errors.push(inputsNames[index]);
+                }
+            });
+
+            // Проверка, что селекты выбраны
+            if (!cargoSelected) {
+                errors.push('груз');
+            }
+
+            if (!routeSelected) {
+                errors.push('маршрут');
+            }
+
+            if (!lastSelectedTime) {
+                errors.push('время');
+            }
+
+            // Проверка на наличие подходящих машин
+            const maxWeight = parseFloat(inputs[0].value) || 0;
+            const maxLength = parseFloat(inputs[1].value) || 0;
+            const maxWidth = parseFloat(inputs[2].value) || 0;
+            const maxHeight = parseFloat(inputs[3].value) || 0;
+            let hasSuitableTransport = false;
+
+            data.forEach(transport => {
+                if (maxWeight <= transport.max_weigth &&
+                    maxLength <= transport.max_length &&
+                    maxWidth <= transport.max_width &&
+                    maxHeight <= transport.max_heigth) {
+                    hasSuitableTransport = true;
+                }
+            });
+
+            if (!hasSuitableTransport) {
+                errors.length = 0; // Очищаем массив ошибок
+                errors.push('нет машин подходящих по параметрам');
+            }
+
+            const isFormValid = allInputsFilled &&
+                (cargoSelectedOther || (cargoSelected && selectCargo.value !== 'other')) &&
+                (routeSelectedOther || (routeSelected && selectRoute.value !== 'other')) &&
+                lastSelectedTime;
+
+            // Toggle класса для кнопки
+            if (isFormValid) {
+                submitButton.classList.add('form__save-btn_active'); // Добавляем класс
+                submitButton.disabled = false; // Активируем кнопку
+                errorSpan.textContent = ''; // Очищаем сообщение об ошибке
+            } else {
+                submitButton.classList.remove('form__save-btn_active'); // Убираем класс
+                submitButton.disabled = true; // Делаем кнопку неактивной
+
+                if (errors.length > 0) {
+                    errorSpan.textContent = `Пожалуйста, заполните: ${errors.join(', ')}.`;
+                } else {
+                    errorSpan.textContent = ''; // Сбрасываем сообщение об ошибке
+                }
+            }
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                updateCalendar()
+                validateForm();
+            });
+        });
+
+        //Валидация  при изменение полей описания
+        inputsAbout.forEach(input => {
+            input.addEventListener('input', () => {
+                submitButton.disabled = true; // Делаем кнопку неактивной
+                validateForm();
+            });
+        });
+
+        // Пример функции для выбора времени
+        function onTimeSelect(selectedTime) {
+            lastSelectedTime = selectedTime;
+            validateForm(); // Проверяем форму после выбора времени
+        }
+
+        // Функция для форматирования даты
+        function formatDate(dateString) {
+            const date = new Date(dateString.split('.').reverse().join('-'));
+            const options = { weekday: 'long', day: '2-digit', month: '2-digit' };
+            return date.toLocaleDateString('ru-RU', options).replace(',', ''); // Убираем запятую
+        }
+
+        // Установка атрибутов max для инпутов на основе данных
+        function setMaxAttributes() {
+            let maxWeight = 0;
+            let maxLength = 0;
+            let maxWidth = 0;
+            let maxHeight = 0;
+
+            data.forEach(transport => {
+                if (transport.dates.some(dateObj => dateObj.available_time.length > 0)) {
+                    maxWeight = Math.max(maxWeight, transport.max_weigth);
+                    maxLength = Math.max(maxLength, transport.max_length);
+                    maxWidth = Math.max(maxWidth, transport.max_width);
+                    maxHeight = Math.max(maxHeight, transport.max_heigth);
+                }
+            });
+
+            inputs[0].setAttribute('max', maxWeight);
+            inputs[1].setAttribute('max', maxLength);
+            inputs[2].setAttribute('max', maxWidth);
+            inputs[3].setAttribute('max', maxHeight);
+            inputs[0].setAttribute('placeholder', 'Вес(кг) ' + 'Макс ' + maxWeight + "кг")
+            inputs[1].setAttribute('placeholder', 'Длина(м) ' + 'Макс ' + maxLength + "м")
+            inputs[2].setAttribute('placeholder', 'Ширина(м) ' + 'Макс ' + maxWidth + "м")
+            inputs[3].setAttribute('placeholder', 'Высота(м) ' + 'Макс ' + maxHeight + "м")
+        }
+
+        setMaxAttributes();
+
+        inputs.forEach(input => {
+            input.addEventListener('input', function () {
+                // Проверка на превышение значения max
+                if (parseFloat(input.value) > parseFloat(input.getAttribute('max'))) {
+                    input.value = input.getAttribute('max'); // Установка значения max
+                }
+                updateCalendar();
+            });
+        });
+
+        function updateCalendar() {
+
+            lastSelectedTime = null;
+
+            const maxWeight = parseFloat(inputs[0].value) || 0;
+            const maxLength = parseFloat(inputs[1].value) || 0;
+            const maxWidth = parseFloat(inputs[2].value) || 0;
+            const maxHeight = parseFloat(inputs[3].value) || 0;
+
+            // Проверка на заполненность всех полей
+            if (inputs.some(input => input.value === '')) {
+                calendarDiv.innerHTML = "";
+                return;
+            }
+
+            calendarDiv.innerHTML = ""; // Очистка календаря перед отрисовкой
+
+            const uniqueDates = new Set();
+
+            data.forEach(transport => {
+                // Проверка на соответствие максимальным значениям (значения меньше)
+                if (maxWeight <= transport.max_weigth &&
+                    maxLength <= transport.max_length &&
+                    maxWidth <= transport.max_width &&
+                    maxHeight <= transport.max_heigth) {
+
+                    transport.dates.forEach(dateObj => {
+                        uniqueDates.add(dateObj.date);
+                    });
+                }
+            });
+
+            uniqueDates.forEach(date => {
+                const dateDiv = document.createElement('div');
+                const day = document.createElement('p');
+                dateDiv.className = 'calendar__date';
+                day.textContent = formatDate(date);
+                day.className = 'calendar__day';
+                dateDiv.setAttribute('value', date);
+                dateDiv.onclick = function () {
+                    valueDate.value = date;
+                }
+
+                calendarDiv.appendChild(dateDiv);
+                dateDiv.appendChild(day)
+
+                const timeSlots = new Set();
+
+                data.forEach(transport => {
+                    if (maxWeight <= transport.max_weigth &&
+                        maxLength <= transport.max_length &&
+                        maxWidth <= transport.max_width &&
+                        maxHeight <= transport.max_heigth) {
+
+                        transport.dates.forEach(dateObj => {
+                            if (dateObj.date === date) {
+                                dateObj.available_time.forEach(time => {
+                                    timeSlots.add(time);
+                                });
+                            }
+                        });
+                    }
+                });
+
+                const sortedTimeSlots = Array.from(timeSlots).sort((a, b) => new Date(`1970-01-01T${a}:00`) - new Date(`1970-01-01T${b}:00`));
+
+                sortedTimeSlots.forEach(time => {
+                    const timeDiv = document.createElement('div');
+                    timeDiv.className = 'calendar__time';
+                    timeDiv.onclick = function () {
+                        // Сбрасываем предыдущий выбор
+                        if (lastSelectedTime) {
+                            lastSelectedTime.classList.remove('calendar__time_active');
+                        }
+                        // Обновляем текущий выбор
+                        timeDiv.classList.add('calendar__time_active');
+                        onTimeSelect(timeDiv);
+                        valueTime.value = time;
+                    };
+                    timeDiv.setAttribute('value', time);
+                    timeDiv.textContent = time;
+                    dateDiv.appendChild(timeDiv);
+                });
+            });
+
+            validateForm();
+
+        }
+
+    </script>
+</body>
+
+</html>
